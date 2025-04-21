@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divine Council - IO BOS</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Divine Council Dashboard Specific Styles */
+        .divine-council-dashboard {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-title h1 {
+            font-family: var(--font-secondary) ;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--radiant-white), var(--electric-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .dashboard-title p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .agent-cards {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .agent-card {
+            flex: 1;
+            min-width: 220px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .agent-card.active {
+            border-color: var(--electric-blue);
+            box-shadow: 0 0 20px rgba(0, 162, 255, 0.3);
+        }
+
+        .agent-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .agent-card:hover .agent-icon {
+            transform: scale(1.1);
+        }
+
+        .agent-card h3 {
+            font-family: var(--font-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .agent-card p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 0;
+        }
+
+        /* Agent specific colors */
+        .agent-genesis .agent-icon {
+            background-color: rgba(0, 162, 255, 0.2);
+            color: #00a2ff; /* Blue */
+            box-shadow: 0 0 15px rgba(0, 162, 255, 0.5);
+        }
+
+        .agent-exodus .agent-icon {
+            background-color: rgba(255, 119, 0, 0.2);
+            color: #ff7700; /* Orange */
+            box-shadow: 0 0 15px rgba(255, 119, 0, 0.5);
+        }
+
+        .agent-oracle .agent-icon {
+            background-color: rgba(138, 43, 226, 0.2);
+            color: #8a2be2; /* Purple */
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+
+        .agent-babylon .agent-icon {
+            background-color: rgba(0, 128, 0, 0.2);
+            color: #008000; /* Green */
+            box-shadow: 0 0 15px rgba(0, 128, 0, 0.5);
+        }
+
+        .agent-card.active .agent-icon {
+            box-shadow: 0 0 25px currentColor;
+        }
+
+        /* Agent Panel */
+        .agent-panel {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .agent-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-title {
+            font-family: var(--font-secondary);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .panel-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Agent panel themes */
+        .agent-panel.agent-genesis {
+            border-color: rgba(0, 162, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 162, 255, 0.1);
+        }
+
+        .agent-panel.agent-exodus {
+            border-color: rgba(255, 119, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 119, 0, 0.1);
+        }
+
+        .agent-panel.agent-oracle {
+            border-color: rgba(138, 43, 226, 0.3);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.1);
+        }
+
+        .agent-panel.agent-babylon {
+            border-color: rgba(0, 128, 0, 0.3);
+            box-shadow: 0 0 20px rgba(0, 128, 0, 0.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 15px currentColor; }
+            50% { box-shadow: 0 0 25px currentColor; }
+            100% { box-shadow: 0 0 15px currentColor; }
+        }
+
+        .agent-card.active .agent-icon {
+            animation: glow 2s infinite ease-in-out;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .agent-cards {
+                flex-direction: column;
+            }
+
+            .agent-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="divine-os-container">
+        <!-- Left Navigation Panel -->
+        <nav class="divine-nav">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="images/ankh-infinity-logo.png" alt="IO BOS Logo" class="ankh-infinity">
+                </div>
+                <h2 class="nav-title">IO BOS</h2>
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="dashboard.html">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item has-submenu">
+                    <a href="#" class="submenu-toggle">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Agents</span>
+                        <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="agent.html?agent=genesis">GENESIS</a></li>
+                        <li><a href="agent.html?agent=exodus">EXODUS</a></li>
+                        <li><a href="agent.html?agent=oracle">ORACLE</a></li>
+                        <li><a href="agent.html?agent=babylon">BABYLON</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item active">
+                    <a href="divine-council-dashboard.html">
+                        <i class="fas fa-users"></i>
+                        <span>Divine Council</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item has-submenu">
+                    <a href="#" class="submenu-toggle">
+                        <i class="fas fa-globe"></i>
+                        <span>Modular Realms</span>
+                        <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="realm.html?realm=zion">ZION OS</a></li>
+                        <li><a href="realm.html?realm=blackpantheonx">BLACKPANTHEONX</a></li>
+                        <li><a href="realm.html?realm=finalboss">FINAL BOSS</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="profile.html">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="nav-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <p class="user-name">Divine User</p>
+                        <p class="user-role">Source Access</p>
+                    </div>
+                </div>
+                
+                <button id="logout-btn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Main Content Area -->
+        <main class="divine-content">
+            <!-- Content Header -->
+            <header class="content-header">
+                <div class="header-left">
+                    <button id="nav-toggle" class="nav-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Divine Council</h1>
+                </div>
+                
+                <div class="header-right">
+                    <div class="invitation-badge">
+                        <span id="invitation-code-display">GENESIS2025</span>
+                    </div>
+                    
+                    <button class="cosmic-os-toggle">
+                        <i class="fas fa-terminal"></i>
+                        <span>COSMIC OS</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Divine Council Dashboard -->
+            <div class="content-container">
+                <div class="divine-council-dashboard">
+                    <div class="dashboard-title">
+                        <h1>Divine Council</h1>
+                        <p>Select an agent to activate their divine intelligence</p>
+                    </div>
+                    
+                    <div class="agent-cards">
+                        <!-- GENESIS Agent Card -->
+                        <div class="agent-card agent-genesis" data-agent="genesis">
+                            <div class="agent-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3>GENESIS</h3>
+                            <p>Strategic Intelligence</p>
+                        </div>
+                        
+                        <!-- EXODUS Agent Card -->
+                        <div class="agent-card agent-exodus" data-agent="exodus">
+                            <div class="agent-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3>EXODUS</h3>
+                            <p>Fire Execution</p>
+                        </div>
+                        
+                        <!-- ORACLE Agent Card -->
+                        <div class="agent-card agent-oracle" data-agent="oracle">
+                            <div class="agent-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <h3>ORACLE</h3>
+                            <p>Divine Foresight</p>
+                        </div>
+                        
+                        <!-- BABYLON Agent Card -->
+                        <div class="agent-card agent-babylon" data-agent="babylon">
+                            <div class="agent-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>BABYLON</h3>
+                            <p>System Decoder</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Agent Panel (appears when an agent is selected) -->
+                    <div id="agent-panel" class="agent-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Select an Agent</h2>
+                        </div>
+                        <div class="panel-content">
+                            This is where the agent's divine intelligence will activate.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/demo-features.js"></script>
+    <script src="js/agent-prompt-loader.js"></script>
+    <script src="js/agent-selection.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile navigation toggle
+            document.getElementById('nav-toggle').addEventListener('click', function() {
+                document.querySelector('.divine-nav').classList.toggle('open');
+            });
+            
+            // Initialize agent cards
+            const agentCards = document.querySelectorAll('.agent-card');
+            agentCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove active class from all cards
+                    agentCards.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked card
+                    this.classList.add('active');
+                    
+                    // Get agent name
+                    const agentName = this.getAttribute('data-agent');
+                    
+                    // Update agent panel
+                    const panel = document.getElementById('agent-panel');
+                    panel.className = 'agent-panel active agent-' + agentName;
+                    
+                    // Update panel title
+                    const panelTitle = panel.querySelector('.panel-title');
+                    panelTitle.textContent = agentName.toUpperCase();
+                    
+                    // If agent prompt loader is available, use it
+                    if (window.IOBOSAgentLoader) {
+                        window.IOBOSAgentLoader.setActiveAgent(agentName.toUpperCase());
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
