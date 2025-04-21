@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IO BOS - User Profile</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <style>
+        /* Profile Page Specific Styles */
+        .profile-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) ;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 2rem;
+            box-shadow: 0 0 15px rgba(0, 162, 255, 0.3);
+        }
+
+        .profile-avatar i {
+            font-size: 3rem;
+            color: var(--radiant-white);
+        }
+
+        .profile-title h2 {
+            font-family: var(--font-secondary);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-title p {
+            opacity: 0.7;
+            font-size: 1rem;
+        }
+
+        .profile-section {
+            margin-bottom: 2rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .profile-section h3 {
+            font-family: var(--font-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--electric-blue);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .profile-info-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .profile-info-label {
+            width: 150px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .profile-info-value {
+            flex-grow: 1;
+        }
+
+        .profile-agent {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .profile-agent-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            background-color: var(--cosmic-black);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-agent-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .profile-agent-info h4 {
+            margin: 0 0 0.25rem 0;
+            font-family: var(--font-secondary);
+        }
+
+        .profile-agent-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .profile-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-family: var(--font-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--electric-blue);
+            color: var(--radiant-white);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0088d1;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--radiant-white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--radiant-white);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-danger {
+            background-color: rgba(255, 59, 48, 0.2);
+            color: #ff3b30;
+            border: 1px solid rgba(255, 59, 48, 0.3);
+        }
+
+        .btn-danger:hover {
+            background-color: rgba(255, 59, 48, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+
+            .profile-info-item {
+                flex-direction: column;
+            }
+
+            .profile-info-label {
+                width: 100%;
+                margin-bottom: 0.25rem;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+            }
+
+            .profile-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="divine-os-container">
+        <!-- Left Navigation Panel -->
+        <nav class="divine-nav">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="images/ankh-infinity-logo.png" alt="IO BOS Logo" class="ankh-infinity">
+                </div>
+                <h2 class="nav-title">IO BOS</h2>
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="dashboard.html">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item has-submenu">
+                    <a href="#" class="submenu-toggle">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Agents</span>
+                        <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="agent.html?agent=genesis">GENESIS</a></li>
+                        <li><a href="agent.html?agent=exodus">EXODUS</a></li>
+                        <li><a href="agent.html?agent=oracle">ORACLE</a></li>
+                        <li><a href="agent.html?agent=babylon">BABYLON</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="boardroom.html">
+                        <i class="fas fa-users"></i>
+                        <span>Boardroom</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item has-submenu">
+                    <a href="#" class="submenu-toggle">
+                        <i class="fas fa-globe"></i>
+                        <span>Modular Realms</span>
+                        <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="realm.html?realm=zion">ZION OS</a></li>
+                        <li><a href="realm.html?realm=blackpantheonx">BLACKPANTHEONX</a></li>
+                        <li><a href="realm.html?realm=finalboss">FINAL BOSS</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item active">
+                    <a href="profile.html">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="nav-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <p class="user-name">Divine User</p>
+                        <p class="user-role">Source Access</p>
+                    </div>
+                </div>
+                
+                <button id="logout-btn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Main Content Area -->
+        <main class="divine-content">
+            <!-- Content Header -->
+            <header class="content-header">
+                <div class="header-left">
+                    <button id="nav-toggle" class="nav-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">User Profile</h1>
+                </div>
+                
+                <div class="header-right">
+                    <div class="invitation-badge">
+                        <span id="invitation-code-display">GENESIS2025</span>
+                    </div>
+                    
+                    <button class="cosmic-os-toggle">
+                        <i class="fas fa-terminal"></i>
+                        <span>COSMIC OS</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Profile Content -->
+            <div class="content-container">
+                <div class="profile-content">
+                    <!-- Profile Header -->
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="profile-title">
+                            <h2 id="profile-username">Divine User</h2>
+                            <p id="profile-role">Source Access</p>
+                        </div>
+                    </div>
+                    
+                    <!-- User Information Section -->
+                    <div class="profile-section">
+                        <h3>User Information</h3>
+                        
+                        <div class="profile-info-item">
+                            <div class="profile-info-label">Email</div>
+                            <div class="profile-info-value" id="profile-email">user@iobos.divine</div>
+                        </div>
+                        
+                        <div class="profile-info-item">
+                            <div class="profile-info-label">Username</div>
+                            <div class="profile-info-value" id="profile-username-field">DivineUser</div>
+                        </div>
+                        
+                        <div class="profile-info-item">
+                            <div class="profile-info-label">Invitation Code</div>
+                            <div class="profile-info-value" id="profile-invitation-code">GENESIS2025</div>
+                        </div>
+                        
+                        <div class="profile-info-item">
+                            <div class="profile-info-label">Account Status</div>
+                            <div class="profile-info-value" id="profile-status">Active</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Assigned Agent Section -->
+                    <div class="profile-section">
+                        <h3>Assigned Agent</h3>
+                        
+                        <div class="profile-agent">
+                            <div class="profile-agent-avatar">
+                                <img src="images/agents/genesis-avatar.svg" alt="GENESIS" id="profile-agent-avatar">
+                            </div>
+                            <div class="profile-agent-info">
+                                <h4 id="profile-agent-name">GENESIS</h4>
+                                <p id="profile-agent-role">Strategic Intelligence</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Profile Actions -->
+                    <div class="profile-actions">
+                        <button class="profile-btn btn-primary" id="edit-profile-btn">
+                            <i class="fas fa-edit"></i>
+                            Edit Profile
+                        </button>
+                        
+                        <button class="profile-btn btn-secondary" id="dashboard-btn">
+                            <i class="fas fa-th-large"></i>
+                            Back to Dashboard
+                        </button>
+                        
+                        <button class="profile-btn btn-danger" id="signout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/demo-features.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dashboard button event listener
+            document.getElementById('dashboard-btn').addEventListener('click', function() {
+                window.location.href = 'dashboard.html';
+            });
+            
+            // Sign out button event listener
+            document.getElementById('signout-btn').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+            
+            // Mobile navigation toggle
+            document.getElementById('nav-toggle').addEventListener('click', function() {
+                document.querySelector('.divine-nav').classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
