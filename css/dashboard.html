@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IO BOS - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+</head>
+<body>
+    <div class="divine-os-container">
+        <!-- Left Navigation Panel -->
+        <nav class="divine-nav">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="images/ankh-infinity-logo.png" alt="IO BOS Logo" class="ankh-infinity">
+                </div>
+                <h2 class="nav-title">IO BOS</h2>
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item active">
+                    <a href="dashboard.html">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item has-submenu">
+                    <a href="#" class="submenu-toggle">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Agents</span>
+                        <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="agent.html?agent=genesis">GENESIS</a></li>
+                        <li><a href="agent.html?agent=exodus">EXODUS</a></li>
+                        <li><a href="agent.html?agent=oracle">ORACLE</a></li>
+                        <li><a href="agent.html?agent=babylon">BABYLON</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="boardroom.html">
+                        <i class="fas fa-users"></i>
+                        <span>Boardroom</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item has-submenu">
+                    <a href="#" class="submenu-toggle">
+                        <i class="fas fa-globe"></i>
+                        <span>Modular Realms</span>
+                        <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="realm.html?realm=zion">ZION OS</a></li>
+                        <li><a href="realm.html?realm=blackpantheonx">BLACKPANTHEONX</a></li>
+                        <li><a href="realm.html?realm=finalboss">FINAL BOSS</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="profile.html">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="nav-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <p class="user-name">Divine User</p>
+                        <p class="user-role">Source Access</p>
+                    </div>
+                </div>
+                
+                <button id="logout-btn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Main Content Area -->
+        <main class="divine-content">
+            <!-- Content Header -->
+            <header class="content-header">
+                <div class="header-left">
+                    <button id="nav-toggle" class="nav-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Dashboard</h1>
+                </div>
+                
+                <div class="header-right">
+                    <div class="invitation-badge">
+                        <span id="invitation-code-display">GENESIS2025</span>
+                    </div>
+                    
+                    <button class="cosmic-os-toggle">
+                        <i class="fas fa-terminal"></i>
+                        <span>COSMIC OS</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Dashboard Content -->
+            <div class="content-container">
+                <div class="dashboard-content">
+                    <!-- Welcome Section -->
+                    <section class="dashboard-welcome">
+                        <h2>Welcome to IO BOS</h2>
+                        <p class="subtitle">Which divine agent do you need today?</p>
+                    </section>
+                    
+                    <!-- Agent Carousel -->
+                    <section class="agent-carousel-section">
+                        <div class="section-header">
+                            <h3>Divine Agents</h3>
+                            <div class="carousel-controls">
+                                <button class="carousel-control prev" id="agent-carousel-prev">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="carousel-control next" id="agent-carousel-next">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-carousel">
+                            <div class="agent-card" data-agent="genesis">
+                                <div class="agent-icon">
+                                    <img src="images/agents/genesis-avatar.svg" alt="GENESIS" class="agent-avatar genesis-avatar">
+                                </div>
+                                <div class="agent-info">
+                                    <h3>GENESIS</h3>
+                                    <p class="agent-title">Strategic Intelligence</p>
+                                    <p class="agent-description">Analyzes market trends and provides strategic insights for business growth.</p>
+                                </div>
+                                <div class="agent-actions">
+                                    <button class="agent-action-btn">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="agent-card" data-agent="exodus">
+                                <div class="agent-icon">
+                                    <img src="images/agents/exodus-avatar.svg" alt="EXODUS" class="agent-avatar exodus-avatar">
+                                </div>
+                                <div class="agent-info">
+                                    <h3>EXODUS</h3>
+                                    <p class="agent-title">Bottleneck Eliminator</p>
+                                    <p class="agent-description">Identifies operational bottlenecks and provides solutions for efficiency.</p>
+                                </div>
+                                <div class="agent-actions">
+                                    <button class="agent-action-btn">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="agent-card" data-agent="oracle">
+                                <div class="agent-icon">
+                                    <img src="images/agents/oracle-avatar.svg" alt="ORACLE" class="agent-avatar oracle-avatar">
+                                </div>
+                                <div class="agent-info">
+                                    <h3>ORACLE</h3>
+                                    <p class="agent-title">Scale & Tool Architect</p>
+                                    <p class="agent-description">Recommends tools and strategies to scale your business effectively.</p>
+                                </div>
+                                <div class="agent-actions">
+                                    <button class="agent-action-btn">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="agent-card" data-agent="babylon">
+                                <div class="agent-icon">
+                                    <img src="images/agents/babylon-avatar.svg" alt="BABYLON" class="agent-avatar babylon-avatar">
+                                </div>
+                                <div class="agent-info">
+                                    <h3>BABYLON</h3>
+                                    <p class="agent-title">Asset & Security Advisor</p>
+                                    <p class="agent-description">Protects your business assets and ensures security compliance.</p>
+                                </div>
+                                <div class="agent-actions">
+                                    <button class="agent-action-btn">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Boardroom Mode Section -->
+                    <section class="boardroom-section">
+                        <div class="boardroom-box">
+                            <div class="boardroom-header">
+                                <div class="boardroom-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="boardroom-title">
+                                    <h3>Boardroom Mode</h3>
+                                    <p>All divine agents are ready to collaborate</p>
+                                </div>
+                            </div>
+                            
+                            <div class="boardroom-content">
+                                <p>Engage with the entire divine council simultaneously for multi-perspective clarity on your most complex business challenges.</p>
+                                
+                                <div class="boardroom-actions">
+                                    <button class="btn-activate-boardroom">Enter Boardroom</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Divine Council Section -->
+                    <section class="divine-council-section">
+                        <div class="section-header">
+                            <h3>Divine Council</h3>
+                        </div>
+                        
+                        <div class="council-members">
+                            <div class="council-member" data-agent="genesis">
+                                <div class="member-avatar">
+                                    <img src="images/agents/genesis-avatar.svg" alt="GENESIS" class="member-image">
+                                    <div class="avatar-glow"></div>
+                                </div>
+                                <span class="member-name">GENESIS</span>
+                                <span class="member-status active">Active</span>
+                            </div>
+                            
+                            <div class="council-member" data-agent="exodus">
+                                <div class="member-avatar">
+                                    <img src="images/agents/exodus-avatar.svg" alt="EXODUS" class="member-image">
+                                    <div class="avatar-glow"></div>
+                                </div>
+                                <span class="member-name">EXODUS</span>
+                                <span class="member-status active">Active</span>
+                            </div>
+                            
+                            <div class="council-member" data-agent="oracle">
+                                <div class="member-avatar">
+                                    <img src="images/agents/oracle-avatar.svg" alt="ORACLE" class="member-image">
+                                    <div class="avatar-glow"></div>
+                                </div>
+                                <span class="member-name">ORACLE</span>
+                                <span class="member-status active">Active</span>
+                            </div>
+                            
+                            <div class="council-member" data-agent="babylon">
+                                <div class="member-avatar">
+                                    <img src="images/agents/babylon-avatar.svg" alt="BABYLON" class="member-image">
+                                    <div class="avatar-glow"></div>
+                                </div>
+                                <span class="member-name">BABYLON</span>
+                                <span class="member-status active">Active</span>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Sandbox Input Section -->
+                    <section class="sandbox-section">
+                        <div class="sandbox-input-container">
+                            <textarea id="sandbox-input" placeholder="Ask the divine council..."></textarea>
+                            <button id="sandbox-submit">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/demo-features.js"></script>
+    <script>
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator)  {
+            navigator.serviceWorker.register('/js/service-worker.js')
+                .then(reg => console.log('Service Worker registered', reg))
+                .catch(err => console.log('Service Worker registration failed', err));
+        }
+    </script>
+</body>
+</html>
