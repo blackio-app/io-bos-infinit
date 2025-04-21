@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandbox Mode - IO BOS</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Sandbox Mode Specific Styles */
+        .sandbox-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .sandbox-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) ;
+        }
+
+        .sandbox-header h1 {
+            font-family: var(--font-secondary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--radiant-white), var(--electric-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sandbox-header p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .agent-selector-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .agent-selector-title {
+            font-family: var(--font-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .agent-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .agent-option {
+            flex: 1;
+            min-width: 200px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .agent-option:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .agent-option.selected {
+            border-color: var(--electric-blue);
+            box-shadow: 0 0 10px rgba(0, 162, 255, 0.3);
+        }
+
+        .agent-option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .agent-option-info {
+            flex: 1;
+        }
+
+        .agent-option-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .agent-option-role {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* Agent specific colors */
+        .agent-genesis .agent-option-icon {
+            background-color: rgba(0, 162, 255, 0.2);
+            color: #00a2ff; /* Blue */
+        }
+
+        .agent-exodus .agent-option-icon {
+            background-color: rgba(255, 119, 0, 0.2);
+            color: #ff7700; /* Orange */
+        }
+
+        .agent-oracle .agent-option-icon {
+            background-color: rgba(138, 43, 226, 0.2);
+            color: #8a2be2; /* Purple */
+        }
+
+        .agent-babylon .agent-option-icon {
+            background-color: rgba(0, 128, 0, 0.2);
+            color: #008000; /* Green */
+        }
+
+        /* Business Challenge Input */
+        .challenge-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .challenge-title {
+            font-family: var(--font-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-input-container {
+            position: relative;
+        }
+
+        .challenge-input {
+            width: 100%;
+            min-height: 150px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--radiant-white);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-input:focus {
+            outline: none;
+            border-color: var(--electric-blue);
+            box-shadow: 0 0 10px rgba(0, 162, 255, 0.3);
+        }
+
+        .submit-button {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--electric-blue);
+            color: var(--radiant-white);
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .submit-button:hover {
+            background-color: #0088d1;
+        }
+
+        /* Agent-specific submit buttons */
+        .agent-genesis {
+            background-color: #00a2ff; /* Blue */
+        }
+
+        .agent-exodus {
+            background-color: #ff7700; /* Orange */
+        }
+
+        .agent-oracle {
+            background-color: #8a2be2; /* Purple */
+        }
+
+        .agent-babylon {
+            background-color: #008000; /* Green */
+        }
+
+        /* Chat Container */
+        .chat-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        .chat-title {
+            font-family: var(--font-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chat-title-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 80%;
+            padding: 1rem;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: rgba(0, 162, 255, 0.1);
+            border: 1px solid rgba(0, 162, 255, 0.2);
+        }
+
+        .agent-message {
+            align-self: flex-start;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message-content {
+            margin-bottom: 0.5rem;
+        }
+
+        .message-timestamp {
+            align-self: flex-end;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .agent-options {
+                flex-direction: column;
+            }
+
+            .agent-option {
+                width: 100%;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="divine-os-container">
+        <!-- Left Navigation Panel -->
+        <nav class="divine-nav">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="images/ankh-infinity-logo.png" alt="IO BOS Logo" class="ankh-infinity">
+                </div>
+                <h2 class="nav-title">IO BOS</h2>
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="dashboard.html">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item has-submenu">
+                    <a href="#" class="submenu-toggle">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Agents</span>
+                        <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="agent.html?agent=genesis">GENESIS</a></li>
+                        <li><a href="agent.html?agent=exodus">EXODUS</a></li>
+                        <li><a href="agent.html?agent=oracle">ORACLE</a></li>
+                        <li><a href="agent.html?agent=babylon">BABYLON</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="divine-council-dashboard.html">
+                        <i class="fas fa-users"></i>
+                        <span>Divine Council</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item has-submenu">
+                    <a href="#" class="submenu-toggle">
+                        <i class="fas fa-globe"></i>
+                        <span>Modular Realms</span>
+                        <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="realm.html?realm=zion">ZION OS</a></li>
+                        <li><a href="realm.html?realm=blackpantheonx">BLACKPANTHEONX</a></li>
+                        <li><a href="realm.html?realm=finalboss">FINAL BOSS</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item active">
+                    <a href="sandbox-mode.html">
+                        <i class="fas fa-flask"></i>
+                        <span>Sandbox Mode</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="profile.html">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="nav-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <p class="user-name">Divine User</p>
+                        <p class="user-role">Source Access</p>
+                    </div>
+                </div>
+                
+                <button id="logout-btn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Main Content Area -->
+        <main class="divine-content">
+            <!-- Content Header -->
+            <header class="content-header">
+                <div class="header-left">
+                    <button id="nav-toggle" class="nav-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Sandbox Mode</h1>
+                </div>
+                
+                <div class="header-right">
+                    <div class="invitation-badge">
+                        <span id="invitation-code-display">GENESIS2025</span>
+                    </div>
+                    
+                    <button class="cosmic-os-toggle">
+                        <i class="fas fa-terminal"></i>
+                        <span>COSMIC OS</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Sandbox Mode Content -->
+            <div class="content-container">
+                <div class="sandbox-container">
+                    <div class="sandbox-header agent-genesis">
+                        <h1>Business Strategy Sandbox</h1>
+                        <p>Test your business strategies with our divine agents. Select an agent, describe your business challenge or idea, and receive strategic guidance.</p>
+                    </div>
+                    
+                    <!-- Agent Selector -->
+                    <div class="agent-selector-container">
+                        <h2 class="agent-selector-title">Select an Agent</h2>
+                        
+                        <div class="agent-options">
+                            <!-- GENESIS Agent Option -->
+                            <div class="agent-option agent-genesis selected" data-agent="genesis">
+                                <div class="agent-option-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="agent-option-info">
+                                    <div class="agent-option-name">GENESIS</div>
+                                    <div class="agent-option-role">Strategic Insight Analyst</div>
+                                </div>
+                            </div>
+                            
+                            <!-- EXODUS Agent Option -->
+                            <div class="agent-option agent-exodus" data-agent="exodus">
+                                <div class="agent-option-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <div class="agent-option-info">
+                                    <div class="agent-option-name">EXODUS</div>
+                                    <div class="agent-option-role">Bottleneck Eliminator</div>
+                                </div>
+                            </div>
+                            
+                            <!-- ORACLE Agent Option -->
+                            <div class="agent-option agent-oracle" data-agent="oracle">
+                                <div class="agent-option-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="agent-option-info">
+                                    <div class="agent-option-name">ORACLE</div>
+                                    <div class="agent-option-role">Scale & Tool Architect</div>
+                                </div>
+                            </div>
+                            
+                            <!-- BABYLON Agent Option -->
+                            <div class="agent-option agent-babylon" data-agent="babylon">
+                                <div class="agent-option-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="agent-option-info">
+                                    <div class="agent-option-name">BABYLON</div>
+                                    <div class="agent-option-role">Asset & Security Advisor</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Business Challenge Input -->
+                    <div class="challenge-container">
+                        <h2 class="challenge-title">Describe Your Business Challenge</h2>
+                        
+                        <div class="challenge-input-container">
+                            <textarea id="business-challenge" class="challenge-input" placeholder="Describe your business challenge or idea in detail. Be specific about your goals, constraints, and what you're trying to achieve."></textarea>
+                            
+                            <button id="submit-challenge" class="submit-button agent-genesis">
+                                <i class="fas fa-paper-plane"></i>
+                                Submit to <span id="selected-agent-name">GENESIS</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Response Window -->
+                    <div class="chat-container">
+                        <div class="chat-title">
+                            <div class="chat-title-icon agent-genesis">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <span>Conversation with <span id="selected-agent-role">Strategic Insight Analyst</span></span>
+                        </div>
+                        
+                        <div class="chat-messages">
+                            <!-- Messages will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/demo-features.js"></script>
+    <script src="js/agent-prompt-loader.js"></script>
+    <script src="js/agent-selection.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile navigation toggle
+            document.getElementById('nav-toggle').addEventListener('click', function() {
+                document.querySelector('.divine-nav').classList.toggle('open');
+            });
+            
+            // Agent selection
+            const agentOptions = document.querySelectorAll('.agent-option');
+            agentOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options
+                    agentOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Get agent name
+                    const agentName = this.getAttribute('data-agent');
+                    
+                    // Update header and submit button
+                    const header = document.querySelector('.sandbox-header');
+                    header.className = 'sandbox-header agent-' + agentName;
+                    
+                    const submitButton = document.getElementById('submit-challenge');
+                    submitButton.className = 'submit-button agent-' + agentName;
+                    
+                    // Update selected agent name
+                    const selectedAgentName = document.getElementById('selected-agent-name');
+                    selectedAgentName.textContent = agentName.toUpperCase();
+                    
+                    // Update selected agent role
+                    const selectedAgentRole = document.getElementById('selected-agent-role');
+                    let role = "";
+                    switch (agentName) {
+                        case 'genesis':
+                            role = "Strategic Insight Analyst";
+                            break;
+                        case 'exodus':
+                            role = "Bottleneck Eliminator";
+                            break;
+                        case 'oracle':
+                            role = "Scale & Tool Architect";
+                            break;
+                        case 'babylon':
+                            role = "Asset & Security Advisor";
+                            break;
+                    }
+                    selectedAgentRole.textContent = role;
+                    
+                    // Update chat title icon
+                    const chatTitleIcon = document.querySelector('.chat-title-icon');
+                    chatTitleIcon.className = 'chat-title-icon agent-' + agentName;
+                    
+                    // If agent prompt loader is available, use it
+                    if (window.IOBOSAgentLoader) {
+                        window.IOBOSAgentLoader.setActiveAgent(agentName.toUpperCase());
+                    }
+                });
+            });
+            
+            // Submit challenge
+            document.getElementById('submit-challenge').addEventListener('click', function() {
+                const challengeInput = document.getElementById('business-challenge');
+                const challenge = challengeInput.value.trim();
+                
+                if (!challenge) return;
+                
+                // Get selected agent
+                const selectedOption = document.querySelector('.agent-option.selected');
+                const agentName = selectedOption.getAttribute('data-agent');
+                
+                // Add user message to chat
+                addMessageToChat(challenge, 'user');
+                
+                // Clear input
+                challengeInput.value = '';
+                
+                // Simulate agent response after a short delay
+                setTimeout(() => {
+                    const response = "This is where the agent's divine intelligence will provide strategic guidance based on your business challenge or idea.";
+                    addMessageToChat(response, 'agent');
+                }, 1000);
+            });
+            
+            // Handle Enter key in textarea
+            document.getElementById('business-challenge').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    document.getElementById('submit-challenge').click();
+                }
+            });
+            
+            // Function to add message to chat
+            function addMessageToChat(message, sender) {
+                const chatMessages = document.querySelector('.chat-messages');
+                
+                const messageElement = document.createElement('div');
+                messageElement.className = `message ${sender}-message`;
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.textContent = message;
+                
+                const timestamp = document.createElement('div');
+                timestamp.className = 'message-timestamp';
+                timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                messageElement.appendChild(messageContent);
+                messageElement.appendChild(timestamp);
+                
+                chatMessages.appendChild(messageElement);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
