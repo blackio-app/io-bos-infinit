@@ -30,6 +30,9 @@ self.addEventListener('install', event => {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
       })
+      .catch(error => {
+        console.error('Failed to cache resources during install:', error);
+      })
   );
 });
 
@@ -44,7 +47,7 @@ self.addEventListener('fetch', event => {
         return fetch(event.request).then(
           response => {
             // Check if we received a valid response
-            if(!response || response.status !== 200 || response.type !== 'basic') {
+            if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
 
@@ -54,13 +57,20 @@ self.addEventListener('fetch', event => {
             caches.open(CACHE_NAME)
               .then(cache => {
                 cache.put(event.request, responseToCache);
+              })
+              .catch(error => {
+                console.error('Failed to cache response:', error);
               });
 
             return response;
           }
         );
       })
-    );
+      .catch(error => {
+        console.error('Fetch failed, returning offline fallback if available:', error);
+        return caches.match('/index.html'); // Fallback to index.html for offline
+      })
+  );
 });
 
 self.addEventListener('activate', event => {
