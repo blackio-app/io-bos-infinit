@@ -1,13 +1,12 @@
-// Netlify Function for handling login requests with CORS support and custom credentials
+require('dotenv').config();
+
 exports.handler = async function(event, context) {
-  // Set up CORS headers
   const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Methods": "POST, OPTIONS"
   };
 
-  // Handle preflight OPTIONS request
   if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
@@ -16,7 +15,6 @@ exports.handler = async function(event, context) {
     };
   }
 
-  // Only allow POST requests
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -26,11 +24,9 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    // Parse the request body
     const data = JSON.parse(event.body);
     const { email, password, invitationCode } = data;
     
-    // Basic validation
     if (!email || !password) {
       return {
         statusCode: 400,
@@ -39,22 +35,19 @@ exports.handler = async function(event, context) {
       };
     }
     
-    // Check for invitation code if required
-    if (invitationCode === undefined || invitationCode === '') {
+    const invitationCodeRegex = /^[A-Z0-9]{8,12}$/;
+    if (!invitationCodeRegex.test(invitationCode)) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ message: "Invitation code is required" })
+        body: JSON.stringify({ message: "Invalid invitation code format" })
       };
     }
     
-    // ===== CUSTOM CREDENTIALS =====
-    // Replace these with your own secure credentials
-    const validEmail = "your-email@example.com";
-    const validPassword = "your-secure-password";
-    const validInvitationCode = "YOUR-INVITATION-CODE";
+    const validEmail = process.env.VALID_EMAIL;
+    const validPassword = process.env.VALID_PASSWORD;
+    const validInvitationCode = process.env.VALID_INVITATION_CODE;
     
-    // Check credentials against your custom values
     if (email === validEmail && password === validPassword && invitationCode === validInvitationCode) {
       return {
         statusCode: 200,
@@ -69,7 +62,7 @@ exports.handler = async function(event, context) {
       return {
         statusCode: 401,
         headers,
-        body: JSON.stringify({ message: "Invalid credentials" })
+        body: JSON.stringify({ message: "Invalid email, password, or invitation code" })
       };
     }
   } catch (error) {
