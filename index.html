@@ -1067,42 +1067,186 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        /* ENHANCEMENT: Locked Content */
-        .locked-content {
-            position: relative;
-            filter: blur(5px);
-            pointer-events: none;
+        /* ENHANCEMENT: Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
         }
 
-        .locked-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .content-section.active {
+            display: block;
+        }
+
+        /* ENHANCEMENT: Agent Interface */
+        .agent-interface {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .agent-interface-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333333;
+        }
+
+        .agent-interface-icon {
+            width: 60px;
+            height: 60px;
+            margin-right: 1.5rem;
+        }
+
+        .agent-interface-icon img {
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
+            object-fit: contain;
         }
 
-        .locked-message {
+        .agent-interface-title h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .agent-interface-title p {
+            margin: 0;
+            color: #aaaaaa;
+            font-size: 0.9rem;
+        }
+
+        .agent-interface-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .agent-chat {
+            height: 300px;
             background-color: #222222;
-            padding: 1rem 2rem;
             border-radius: 5px;
+            padding: 1rem;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            display: flex;
+        }
+
+        .chat-message.user {
+            justify-content: flex-end;
+        }
+
+        .chat-bubble {
+            background-color: #333333;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .chat-message.user .chat-bubble {
+            background-color: #00aaff;
+            color: #ffffff;
+        }
+
+        .chat-input {
+            display: flex;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 0.8rem;
+            border-radius: 5px 0 0 5px;
+            border: none;
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        .chat-input button {
+            background-color: #00aaff;
+            border: none;
+            color: #ffffff;
+            padding: 0 1rem;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        /* ENHANCEMENT: Boardroom Interface */
+        .boardroom-interface {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .boardroom-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .boardroom-agent {
+            background-color: #222222;
+            border-radius: 10px;
+            padding: 1rem;
             text-align: center;
         }
 
-        .locked-icon {
-            font-size: 2rem;
-            color: #ff3860;
-            margin-bottom: 0.5rem;
+        .boardroom-agent-avatar {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            position: relative;
         }
 
-        .locked-text {
-            color: #ffffff;
+        .boardroom-agent-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .boardroom-agent-name {
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .boardroom-agent-role {
+            color: #aaaaaa;
             margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .boardroom-chat {
+            height: 300px;
+            background-color: #222222;
+            border-radius: 5px;
+            padding: 1rem;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .boardroom-input {
+            display: flex;
+        }
+
+        .boardroom-input input {
+            flex-grow: 1;
+            padding: 0.8rem;
+            border-radius: 5px 0 0 5px;
+            border: none;
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        .boardroom-input button {
+            background-color: #00aaff;
+            border: none;
+            color: #ffffff;
+            padding: 0 1rem;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -1210,7 +1354,7 @@
                 <div class="welcome-banner">🌀 Welcome to IO BOS — Infinite Intelligence Activated</div>
                 
                 <!-- Dashboard Section -->
-                <section id="dashboard-section" class="slide-in">
+                <section id="dashboard-section" class="content-section active slide-in">
                     <h2>Which divine agent do you need today?</h2>
                     
                     <!-- Original Grid -->
@@ -1362,6 +1506,269 @@
                     <!-- ENHANCEMENT: Logout Button -->
                     <div class="profile-settings">
                         <button id="logout-btn">Logout</button>
+                    </div>
+                </section>
+
+                <!-- Agents Section -->
+                <section id="agents-section" class="content-section">
+                    <h2>Divine Agents</h2>
+                    <p>Select an agent to begin your divine consultation.</p>
+                    
+                    <div class="agent-cards">
+                        <div class="agent-card genesis">
+                            <div class="agent-icon">
+                                <img src="/images/agents/genesis-avatar.png" alt="GENESIS">
+                            </div>
+                            <div class="agent-info">
+                                <h3>GENESIS</h3>
+                                <p class="agent-title">Strategic Intelligence</p>
+                                <p class="agent-description">Analyzes market trends and provides strategic insights for business growth.</p>
+                            </div>
+                            <div class="agent-actions">
+                                <button class="agent-action-btn" data-agent="genesis">
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-card exodus">
+                            <div class="agent-icon">
+                                <img src="/images/agents/exodus-avatar.png" alt="EXODUS">
+                            </div>
+                            <div class="agent-info">
+                                <h3>EXODUS</h3>
+                                <p class="agent-title">Bottleneck Eliminator</p>
+                                <p class="agent-description">Identifies operational bottlenecks and provides solutions for efficiency.</p>
+                            </div>
+                            <div class="agent-actions">
+                                <button class="agent-action-btn" data-agent="exodus">
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-card oracle">
+                            <div class="agent-icon">
+                                <img src="/images/agents/oracle-avatar.png" alt="ORACLE">
+                            </div>
+                            <div class="agent-info">
+                                <h3>ORACLE</h3>
+                                <p class="agent-title">Scale & Tool Architect</p>
+                                <p class="agent-description">Recommends tools and strategies to scale your business effectively.</p>
+                            </div>
+                            <div class="agent-actions">
+                                <button class="agent-action-btn" data-agent="oracle">
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-card babylon">
+                            <div class="agent-icon">
+                                <img src="/images/agents/babylon-avatar.png" alt="BABYLON">
+                            </div>
+                            <div class="agent-info">
+                                <h3>BABYLON</h3>
+                                <p class="agent-title">Asset & Security Advisor</p>
+                                <p class="agent-description">Protects your business assets and ensures security compliance.</p>
+                            </div>
+                            <div class="agent-actions">
+                                <button class="agent-action-btn" data-agent="babylon">
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Agent Interface -->
+                    <div class="agent-interface" id="genesis-interface" style="display: none;">
+                        <div class="agent-interface-header">
+                            <div class="agent-interface-icon">
+                                <img src="/images/agents/genesis-avatar.png" alt="GENESIS">
+                            </div>
+                            <div class="agent-interface-title">
+                                <h3>GENESIS</h3>
+                                <p>Strategic Intelligence</p>
+                            </div>
+                        </div>
+                        <div class="agent-interface-body">
+                            <div class="agent-chat" id="genesis-chat">
+                                <div class="chat-message">
+                                    <div class="chat-bubble">
+                                        Greetings, I am GENESIS, your Strategic Intelligence agent. How may I assist you today?
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input">
+                                <input type="text" id="genesis-input" placeholder="Type your message...">
+                                <button id="genesis-send"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-interface" id="exodus-interface" style="display: none;">
+                        <div class="agent-interface-header">
+                            <div class="agent-interface-icon">
+                                <img src="/images/agents/exodus-avatar.png" alt="EXODUS">
+                            </div>
+                            <div class="agent-interface-title">
+                                <h3>EXODUS</h3>
+                                <p>Bottleneck Eliminator</p>
+                            </div>
+                        </div>
+                        <div class="agent-interface-body">
+                            <div class="agent-chat" id="exodus-chat">
+                                <div class="chat-message">
+                                    <div class="chat-bubble">
+                                        I am EXODUS, your Bottleneck Eliminator. Tell me about the challenges slowing down your business.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input">
+                                <input type="text" id="exodus-input" placeholder="Type your message...">
+                                <button id="exodus-send"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-interface" id="oracle-interface" style="display: none;">
+                        <div class="agent-interface-header">
+                            <div class="agent-interface-icon">
+                                <img src="/images/agents/oracle-avatar.png" alt="ORACLE">
+                            </div>
+                            <div class="agent-interface-title">
+                                <h3>ORACLE</h3>
+                                <p>Scale & Tool Architect</p>
+                            </div>
+                        </div>
+                        <div class="agent-interface-body">
+                            <div class="agent-chat" id="oracle-chat">
+                                <div class="chat-message">
+                                    <div class="chat-bubble">
+                                        ORACLE at your service. What scaling challenges are you facing that I can help with?
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input">
+                                <input type="text" id="oracle-input" placeholder="Type your message...">
+                                <button id="oracle-send"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-interface" id="babylon-interface" style="display: none;">
+                        <div class="agent-interface-header">
+                            <div class="agent-interface-icon">
+                                <img src="/images/agents/babylon-avatar.png" alt="BABYLON">
+                            </div>
+                            <div class="agent-interface-title">
+                                <h3>BABYLON</h3>
+                                <p>Asset & Security Advisor</p>
+                            </div>
+                        </div>
+                        <div class="agent-interface-body">
+                            <div class="agent-chat" id="babylon-chat">
+                                <div class="chat-message">
+                                    <div class="chat-bubble">
+                                        BABYLON online. I'm here to protect your assets and ensure your security. What concerns do you have?
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input">
+                                <input type="text" id="babylon-input" placeholder="Type your message...">
+                                <button id="babylon-send"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Boardroom Section -->
+                <section id="boardroom-section" class="content-section">
+                    <h2>Divine Council Boardroom</h2>
+                    <p>Engage with all divine agents simultaneously for comprehensive insights.</p>
+                    
+                    <div class="boardroom-interface">
+                        <div class="boardroom-grid">
+                            <div class="boardroom-agent">
+                                <div class="boardroom-agent-avatar">
+                                    <img src="/images/agents/genesis-avatar.png" alt="GENESIS">
+                                </div>
+                                <p class="boardroom-agent-name">GENESIS</p>
+                                <p class="boardroom-agent-role">Strategic Intelligence</p>
+                            </div>
+                            <div class="boardroom-agent">
+                                <div class="boardroom-agent-avatar">
+                                    <img src="/images/agents/exodus-avatar.png" alt="EXODUS">
+                                </div>
+                                <p class="boardroom-agent-name">EXODUS</p>
+                                <p class="boardroom-agent-role">Bottleneck Eliminator</p>
+                            </div>
+                            <div class="boardroom-agent">
+                                <div class="boardroom-agent-avatar">
+                                    <img src="/images/agents/oracle-avatar.png" alt="ORACLE">
+                                </div>
+                                <p class="boardroom-agent-name">ORACLE</p>
+                                <p class="boardroom-agent-role">Scale & Tool Architect</p>
+                            </div>
+                            <div class="boardroom-agent">
+                                <div class="boardroom-agent-avatar">
+                                    <img src="/images/agents/babylon-avatar.png" alt="BABYLON">
+                                </div>
+                                <p class="boardroom-agent-name">BABYLON</p>
+                                <p class="boardroom-agent-role">Asset & Security Advisor</p>
+                            </div>
+                        </div>
+                        
+                        <div class="boardroom-chat" id="boardroom-chat">
+                            <div class="chat-message">
+                                <div class="chat-bubble">
+                                    Welcome to the Divine Council Boardroom. All agents are present and ready to assist you.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="boardroom-input">
+                            <input type="text" id="boardroom-input-field" placeholder="Ask the divine council...">
+                            <button id="boardroom-send"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings-section" class="content-section">
+                    <h2>Settings</h2>
+                    <p>Customize your divine experience.</p>
+                    
+                    <div class="agent-interface">
+                        <div class="agent-interface-header">
+                            <div class="agent-interface-icon">
+                                <i class="fas fa-cog" style="font-size: 2rem; color: #00aaff;"></i>
+                            </div>
+                            <div class="agent-interface-title">
+                                <h3>User Settings</h3>
+                                <p>Personalize your IO BOS experience</p>
+                            </div>
+                        </div>
+                        <div class="agent-interface-body">
+                            <form id="settings-form">
+                                <div class="form-group">
+                                    <label for="display-name">Display Name</label>
+                                    <input type="text" id="display-name" value="Divine User">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email-address">Email Address</label>
+                                    <input type="email" id="email-address" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="invitation-code-settings">Invitation Code</label>
+                                    <input type="text" id="invitation-code-settings" value="GENESIS2025">
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="btn-cancel">Cancel</button>
+                                    <button type="submit" class="btn-register">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </section>
             </main>
@@ -1524,17 +1931,9 @@
                 return;
             }
             
-            // Check if invitation code is valid
-            const isValidCode = invitationCode === 'IAMTHESOURCE';
-            if (!isValidCode) {
-                alert('Invalid invitation code');
-                return;
-            }
-            
             // Store registration data (in a real app, this would be sent to a server)
             localStorage.setItem('registeredUsername', username);
             localStorage.setItem('registeredEmail', email);
-            localStorage.setItem('hasValidInvitation', 'true');
             
             // Close modal and show success message
             registrationModal.classList.remove('active');
@@ -1667,7 +2066,28 @@
         launchAgentBtn.addEventListener('click', function() {
             const agentId = this.getAttribute('data-agent');
             agentModal.classList.remove('active');
-            alert(`${agentData[agentId].name} agent will be available in the full version.`);
+            
+            // Show the agent interface
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById('agents-section').classList.add('active');
+            
+            // Hide all agent interfaces
+            document.querySelectorAll('.agent-interface').forEach(interface => {
+                interface.style.display = 'none';
+            });
+            
+            // Show the selected agent interface
+            document.getElementById(`${agentId}-interface`).style.display = 'block';
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.querySelector('.nav-item a[href="#agents"]').closest('.nav-item').classList.add('active');
         });
 
         // ENHANCEMENT: Card Interactions
@@ -1707,7 +2127,20 @@
         // ENHANCEMENT: Boardroom Activation
         document.getElementById('activate-boardroom').addEventListener('click', function() {
             activateCosmicOS(false);
-            alert('Boardroom mode will be available in the full version.');
+            
+            // Show the boardroom section
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById('boardroom-section').classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.querySelector('.nav-item a[href="#boardroom"]').closest('.nav-item').classList.add('active');
         });
 
         // ENHANCEMENT: Navigation
@@ -1723,18 +2156,23 @@
                 // Add active class to clicked nav item
                 this.closest('.nav-item').classList.add('active');
                 
-                // Handle section navigation
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show the selected section
                 const sectionId = this.getAttribute('data-section');
-                if (sectionId === 'dashboard-section') {
-                    // Show dashboard section
-                } else if (sectionId === 'agents-section') {
-                    alert('Agents section will be available in the full version.');
-                } else if (sectionId === 'boardroom-section') {
-                    alert('Boardroom section will be available in the full version.');
-                } else if (sectionId === 'cosmic-os-section') {
+                document.getElementById(sectionId).classList.add('active');
+                
+                // If cosmic OS section, activate it
+                if (sectionId === 'cosmic-os-section') {
                     activateCosmicOS(true);
-                } else if (sectionId === 'settings-section') {
-                    alert('Settings section will be available in the full version.');
+                    
+                    // After activation, return to dashboard
+                    setTimeout(() => {
+                        document.querySelector('.nav-item a[href="#dashboard"]').click();
+                    }, 4000);
                 }
             });
         });
@@ -1755,15 +2193,162 @@
             authContainer.style.display = 'block';
         });
 
+        // ENHANCEMENT: Agent Chat Functionality
+        function setupAgentChat(agentId) {
+            const inputField = document.getElementById(`${agentId}-input`);
+            const sendButton = document.getElementById(`${agentId}-send`);
+            const chatContainer = document.getElementById(`${agentId}-chat`);
+            
+            sendButton.addEventListener('click', function() {
+                const message = inputField.value.trim();
+                if (!message) return;
+                
+                // Add user message
+                const userMessageHTML = `
+                    <div class="chat-message user">
+                        <div class="chat-bubble">
+                            ${message}
+                        </div>
+                    </div>
+                `;
+                chatContainer.innerHTML += userMessageHTML;
+                
+                // Clear input
+                inputField.value = '';
+                
+                // Scroll to bottom
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                
+                // Simulate agent response after a delay
+                setTimeout(() => {
+                    const agentResponses = {
+                        genesis: "I'm analyzing your request from a strategic perspective. This insight will help position your business for optimal growth.",
+                        exodus: "I've identified potential bottlenecks in this area. Let me suggest some optimization strategies.",
+                        oracle: "Based on your needs, I recommend these scaling tools and approaches to maximize your efficiency.",
+                        babylon: "I'll secure your assets and implement protective measures to safeguard your business interests."
+                    };
+                    
+                    const agentMessageHTML = `
+                        <div class="chat-message">
+                            <div class="chat-bubble">
+                                ${agentResponses[agentId]}
+                            </div>
+                        </div>
+                    `;
+                    chatContainer.innerHTML += agentMessageHTML;
+                    
+                    // Scroll to bottom
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 1000);
+            });
+            
+            // Also submit on Enter key
+            inputField.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+        }
+        
+        // Setup chat for each agent
+        setupAgentChat('genesis');
+        setupAgentChat('exodus');
+        setupAgentChat('oracle');
+        setupAgentChat('babylon');
+        
+        // ENHANCEMENT: Boardroom Chat Functionality
+        const boardroomInputField = document.getElementById('boardroom-input-field');
+        const boardroomSendButton = document.getElementById('boardroom-send');
+        const boardroomChatContainer = document.getElementById('boardroom-chat');
+        
+        boardroomSendButton.addEventListener('click', function() {
+            const message = boardroomInputField.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            const userMessageHTML = `
+                <div class="chat-message user">
+                    <div class="chat-bubble">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            boardroomChatContainer.innerHTML += userMessageHTML;
+            
+            // Clear input
+            boardroomInputField.value = '';
+            
+            // Scroll to bottom
+            boardroomChatContainer.scrollTop = boardroomChatContainer.scrollHeight;
+            
+            // Simulate boardroom response after a delay
+            setTimeout(() => {
+                const agentResponses = [
+                    "GENESIS: From a strategic perspective, I recommend focusing on market expansion.",
+                    "EXODUS: I've identified workflow inefficiencies that could be optimized.",
+                    "ORACLE: These tools would help scale your operations effectively.",
+                    "BABYLON: I suggest implementing these security measures to protect your assets."
+                ];
+                
+                // Add responses from all agents
+                agentResponses.forEach((response, index) => {
+                    setTimeout(() => {
+                        const agentMessageHTML = `
+                            <div class="chat-message">
+                                <div class="chat-bubble">
+                                    ${response}
+                                </div>
+                            </div>
+                        `;
+                        boardroomChatContainer.innerHTML += agentMessageHTML;
+                        
+                        // Scroll to bottom
+                        boardroomChatContainer.scrollTop = boardroomChatContainer.scrollHeight;
+                    }, index * 800);
+                });
+            }, 1000);
+        });
+        
+        // Also submit on Enter key
+        boardroomInputField.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                boardroomSendButton.click();
+            }
+        });
+
+        // ENHANCEMENT: Settings Form
+        document.getElementById('settings-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const displayName = document.getElementById('display-name').value;
+            const emailAddress = document.getElementById('email-address').value;
+            const invitationCode = document.getElementById('invitation-code-settings').value;
+            
+            // Update user name display
+            document.getElementById('user-name-display').textContent = displayName;
+            
+            // Update invitation badge
+            document.getElementById('invitation-badge').textContent = invitationCode;
+            
+            // Store settings
+            localStorage.setItem('displayName', displayName);
+            localStorage.setItem('userEmail', emailAddress);
+            localStorage.setItem('invitationCode', invitationCode);
+            
+            // Show success message
+            alert('Settings saved successfully!');
+        });
+
         // ENHANCEMENT: Check Authentication Status on Load
         window.addEventListener('DOMContentLoaded', function() {
             const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
             const userEmail = localStorage.getItem('userEmail');
+            const displayName = localStorage.getItem('displayName');
             const invitationCode = localStorage.getItem('invitationCode');
             
-            if (isAuthenticated && userEmail) {
+            if (isAuthenticated && (userEmail || displayName)) {
                 // Update user name display
-                document.getElementById('user-name-display').textContent = userEmail;
+                document.getElementById('user-name-display').textContent = displayName || userEmail || 'Divine User';
                 
                 // Show dashboard
                 authContainer.style.display = 'none';
@@ -1773,8 +2358,19 @@
                 if (invitationCode) {
                     document.getElementById('invitation-badge').textContent = invitationCode;
                 }
+                
+                // Update settings form
+                document.getElementById('display-name').value = displayName || 'Divine User';
+                document.getElementById('email-address').value = userEmail || '';
+                document.getElementById('invitation-code-settings').value = invitationCode || 'GENESIS2025';
+            }
+            
+            // Pre-fill email if available
+            if (userEmail) {
+                document.getElementById('email-input').value = userEmail;
             }
         });
     </script>
 </body>
 </html>
+
