@@ -2,17 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="IOBOS V13">
+    <meta name="description" content="Divine Operating System">
     <title>IO BOS - Divine Operating System</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/ankh-infinity-logo.png">
     <style>
         /* Base Styles */
         :root {
             --primary-blue: #0077ff;
             --sacred-blue: #00a2ff;
-            --genesis-green: #00ff9d;
+            --genesis-blue: #0088ff; /* Changed from green to blue as requested */
             --exodus-orange: #ff7700;
             --oracle-purple: #9d00ff;
-            --babylon-red: #ff0055;
+            --babylon-green: #00cc66; /* Changed from red to green as requested */
             --dark-bg: #000000;
             --card-bg: #111111;
             --text-color: #ffffff;
@@ -368,13 +375,36 @@
             margin-left: 5px;
         }
 
-        /* Agent Cards */
+        /* Agent Cards - Carousel Layout */
+        .agent-cards-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
         .agent-card {
             position: relative;
             border-radius: var(--border-radius);
             overflow: hidden;
             padding: 0;
             height: 400px;
+            flex: 0 0 auto;
+            width: 280px;
+            min-width: 280px;
+            scroll-snap-align: start;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .agent-card {
+                height: 350px;
+                width: 250px;
+                min-width: 250px;
+            }
         }
 
         .agent-card::before {
@@ -388,8 +418,8 @@
         }
 
         .genesis-card::before {
-            background-color: var(--genesis-green);
-            box-shadow: 0 0 15px var(--genesis-green);
+            background-color: var(--genesis-blue);
+            box-shadow: 0 0 15px var(--genesis-blue);
         }
 
         .exodus-card::before {
@@ -403,8 +433,8 @@
         }
 
         .babylon-card::before {
-            background-color: var(--babylon-red);
-            box-shadow: 0 0 15px var(--babylon-red);
+            background-color: var(--babylon-green);
+            box-shadow: 0 0 15px var(--babylon-green);
         }
 
         .agent-image {
@@ -426,7 +456,7 @@
         }
 
         .genesis-title {
-            color: var(--genesis-green);
+            color: var(--genesis-blue);
         }
 
         .exodus-title {
@@ -438,7 +468,7 @@
         }
 
         .babylon-title {
-            color: var(--babylon-red);
+            color: var(--babylon-green);
         }
 
         .agent-role {
@@ -476,8 +506,8 @@
         }
 
         .genesis-btn {
-            background-color: var(--genesis-green);
-            color: #000;
+            background-color: var(--genesis-blue);
+            color: #fff;
         }
 
         .exodus-btn {
@@ -491,8 +521,8 @@
         }
 
         .babylon-btn {
-            background-color: var(--babylon-red);
-            color: #fff;
+            background-color: var(--babylon-green);
+            color: #000;
         }
 
         .agent-btn:hover {
@@ -597,19 +627,23 @@
 
         .divine-council-image {
             width: 100%;
-            max-width: 800px;
-            margin: 0 auto 30px;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 20px;
             display: block;
             border-radius: var(--border-radius);
+            object-fit: contain;
         }
 
         .agent-carousel {
             display: flex;
             overflow-x: auto;
-            padding: 20px 0;
-            margin-bottom: 30px;
+            padding: 10px 0;
+            margin-bottom: 20px;
             scrollbar-width: thin;
             scrollbar-color: var(--sacred-blue) var(--card-bg);
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
         }
 
         .agent-carousel::-webkit-scrollbar {
@@ -626,14 +660,15 @@
         }
 
         .carousel-item {
-            min-width: 200px;
-            height: 250px;
-            margin-right: 20px;
+            min-width: 150px;
+            height: 200px;
+            margin-right: 15px;
             border-radius: var(--border-radius);
             overflow: hidden;
             position: relative;
             cursor: pointer;
             transition: all var(--transition-speed);
+            scroll-snap-align: start;
         }
 
         .carousel-item:hover {
@@ -669,10 +704,10 @@
         .boardroom-chat {
             background-color: rgba(0, 0, 0, 0.3);
             border-radius: var(--border-radius);
-            padding: 20px;
-            height: 300px;
+            padding: 15px;
+            height: 250px;
             overflow-y: auto;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -947,24 +982,50 @@
         /* Agent Chat Modal */
         .agent-chat-container {
             display: flex;
-            height: 500px;
+            flex-direction: column;
+            height: auto;
+            max-height: 80vh;
+        }
+
+        @media (min-width: 768px) {
+            .agent-chat-container {
+                flex-direction: row;
+                height: 500px;
+            }
         }
 
         .agent-info {
-            width: 250px;
-            padding: 20px;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
+        @media (min-width: 768px) {
+            .agent-info {
+                width: 250px;
+                padding: 20px;
+                border-right: 1px solid rgba(255, 255, 255, 0.1);
+                border-bottom: none;
+            }
+        }
+
         .agent-avatar {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        @media (min-width: 768px) {
+            .agent-avatar {
+                width: 120px;
+                height: 120px;
+            }
         }
 
         .agent-name {
@@ -1028,13 +1089,31 @@
 
         .chat-messages {
             flex: 1;
-            padding: 20px;
+            padding: 15px;
             overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin: 10px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .chat-footer {
-            padding: 15px 20px;
+            padding: 10px 15px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 0.95rem;
+            transition: all var(--transition-speed);
+            margin-right: 10px;
         }
 
         /* COSMIC OS Visualization in Agent Chat */
@@ -1085,8 +1164,8 @@
         }
 
         .genesis-cosmic-icon {
-            background-color: var(--genesis-green);
-            color: #000;
+            background-color: var(--genesis-blue);
+            color: #fff;
         }
 
         .exodus-cosmic-icon {
@@ -1813,7 +1892,7 @@
                 name: 'BABYLON',
                 title: 'Asset & Security Advisor',
                 avatar: 'images/babylon-avatar.png',
-                color: 'var(--babylon-red)',
+                color: 'var(--babylon-green)',
                 greeting: 'I am BABYLON, your Asset & Security Advisor. How can I help you protect your business assets and ensure security compliance today?',
                 cosmicClass: 'babylon-cosmic-icon'
             }
@@ -2099,6 +2178,19 @@
         // Initialize integrity verification
         const systemIntegrity = verifyIOBOSIntegrity();
         console.log("%c System Integrity: " + systemIntegrity, "color: #00a2ff; font-size: 12px;");
+        
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js')
+                .then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(function(error) {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+            });
+        }
     </script>
 </body>
 </html>
